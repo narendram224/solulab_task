@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import tickerReducer from "./ticker/tickerReducer";
+import tickerReducer from "./Ticker/tickerReducer";
 
  const rootReducers = combineReducers({
     ticker:tickerReducer

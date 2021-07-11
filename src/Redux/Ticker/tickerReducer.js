@@ -1,41 +1,25 @@
-import { FETCH_USER_REQUEST, FETCH_USER_SUCCESS, FETCH_USER_FAILURE } from "./tickerType";
+import { FETCH_ALL_TICKER_SUCCESS, FETCH_ALL_TICKER_FAILURE, FETCH_ALL_TICKER_REQUEST } from "./tickerType";
 import produce from "immer"
 
-const initialState ={
+// Reducer with initial state
+const INITIAL_STATE = {
+    /* bunch of todos */
     loading:false,
     users:[],
     error:''
 }
 
-
-// Reducer with initial state
-const INITIAL_STATE = [
-    /* bunch of todos */
-]
-
 const tickerReducer = produce((draft=INITIAL_STATE, action) => {
     switch (action.type) {
-        case FETCH_USER_REQUEST:
-            return{
-                ...state,
-                loading:true
-            }
-        case FETCH_USER_SUCCESS:
-            return{
-                ...state,
-                loading:false,
-                user:action.payload,
-                error:''
-            }
-        case FETCH_USER_FAILURE:
-            return{
-                ...state,
-                loading:false,
-                error:action.payload,
-                user:[]
-            }
+        case FETCH_ALL_TICKER_REQUEST:
+            draft.loading=true;
+           return draft;
+        case FETCH_ALL_TICKER_SUCCESS:
+            return draft;
+        case FETCH_ALL_TICKER_FAILURE:
+            return draft;
         default:
-            return state;
+            return draft;
     }
 })
 
