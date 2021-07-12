@@ -1,8 +1,8 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+
+## Note In this React app websocket is connected by default when we click connect/disconnect button to control the webscoket. 
 
 In the project directory, you can run:
 
