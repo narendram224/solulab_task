@@ -1,4 +1,4 @@
-import {FETCH_ALL_TICKER_FAILURE, FETCH_ALL_TICKER_SUCCESS, FETCH_ALL_TICKER_REQUEST } from "./tickerType"
+import {FETCH_ALL_TICKER_FAILURE, FETCH_ALL_TICKER_SUCCESS, FETCH_ALL_TICKER_REQUEST,FETCH_TICKER_HISTORY } from "./tickerType"
 import Axios from "axios"
 
  const fetchAllTickersRequest = ()=>{
@@ -19,20 +19,26 @@ import Axios from "axios"
         payload:error
     }
 }
+export const fetchTickerHistoryData = (payload)=>{
+    return {
+        type:FETCH_TICKER_HISTORY,
+        payload
+    }
+}
 
 // Api call code for fetch all tickers 
 
 export const fetchUser = ()=>{
     return (dispatch)=>{
-            dispatch(fetchUserRequest);
+            // dispatch(fetchUserRequest);
             Axios.get("https://jsonplaceholder.typicode.com/users")
             .then( response=>{
                     const user = response.data;
-                    dispatch(fetchUserSuccess(user))
+                    // dispatch(fetchUserSuccess(user))
             })
             .catch((err)=>{
                 const error = err.message;
-                dispatch(fetchUserFailure((error)))
+                // dispatch(fetchUserFailure((error)))
             })
     }
 }

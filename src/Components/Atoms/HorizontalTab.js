@@ -73,9 +73,9 @@ export default function HorizontalTabs() {
             <InputField type="text" placeholder="hekllo" />
             <SelectOpt />
        </header>
-       <main className="trading_tab_main_wrapper">
+       <section className="trading_tab_main_wrapper">
     <EnhancedTable />
-</main>       
+</section>       
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
