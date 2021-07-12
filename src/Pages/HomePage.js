@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AccordionCom from '../Components/Atoms/Accordion';
-import { Grid } from '@material-ui/core';
-import './HomePage.css'
-import { wsConnect, newMessage, fetch_all_history, wsDisconnect } from '../Redux/socket/SocketType';
-import {fetchTickerHistoryData} from '../Redux/Ticker/tickerAction'; 
+import { Grid, Button } from '@material-ui/core';
+import { wsConnect, fetch_all_history, wsDisconnect } from '../Middleware/SocketReducer';
+import SimpleSnackbar from '../Components/Atoms/Toster';
+import { WEB_SOCKET_BASE_URL } from '../Contant';
 
 const HomePage = () => {
 //  redux hooks for dispatch actions
   const dispatch = useDispatch();
+  const childRef = useRef();
 //Socket  connection and joining method 
 
 const connectAndJoin = () => {
-  const host = "wss://api-pub.bitfinex.com/ws/2";
+  const host = WEB_SOCKET_BASE_URL;
   dispatch(wsConnect(host,fetchTickerHistory));
 };
   useEffect(() => {
@@ -25,9 +26,14 @@ const connectAndJoin = () => {
 // callback after completed the socket connection
   const fetchTickerHistory = ()=>{
      dispatch(fetch_all_history('ticker','tBTCUSD'))
-    //  setTimeout(() => {
-    //   dispatch(wsDisconnect())
-    //  },10000);
+  }
+  const handleCloseConnection = ()=>{
+    dispatch(wsDisconnect());
+    childRef.current.openToaster("Close the connection")
+  }
+  const handleOpenConnection = ()=>{
+    connectAndJoin()
+    childRef.current.openToaster("Open the connection")
   }
 
 // State of ticker from stor
@@ -40,8 +46,14 @@ const connectAndJoin = () => {
     <AccordionCom ticker={tickers} />
 
   </Grid>
-  <Grid container item xs={12} sm={6} md={7} lg={8}   style={{backgroundColor:"tomato"}} >
-      Candle Chat showing here
+  <Grid container item xs={12} sm={6} md={7} lg={8}  >
+    <div style={{margin:"1em"}} >
+      
+    <Button variant="contained" style={{backgroundColor:"#32CD32",color:"white",margin:"1em"}} onClick={handleOpenConnection} >Connect</Button>
+    <Button variant="contained" style={{backgroundColor:"tomato",color:"white",margin:"1em"}} onClick={handleCloseConnection}>Disconnect</Button>
+<SimpleSnackbar ref={childRef} />
+</div>
+
             {/* <button onClick={()=>dispatch(buycake())}>buy cake</button> */}
 
   </Grid>

@@ -15,8 +15,12 @@ const tickerReducer = produce((draft=INITIAL_STATE, action) => {
             draft.loading=true;
            return draft;
         case FETCH_TICKER_HISTORY:
-            console.log("the payload is",action.payload);
-            
+
+            if (action.payload&&action.payload[1]&&action.payload[1].length>0) {
+            console.log("the payload is",action.payload[1]);
+
+                 draft.tickers.push([...action.payload[1],'BTC']) 
+            }
             return draft;
         case FETCH_ALL_TICKER_FAILURE:
             return draft;

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import tickerReducer from "./Ticker/tickerReducer";
-import { websocketReducer } from "./socket/SocketType";
+import { websocketReducer } from "../Middleware/SocketReducer";
 
  const rootReducers = combineReducers({
     ticker:tickerReducer,

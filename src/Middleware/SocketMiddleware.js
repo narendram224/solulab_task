@@ -1,13 +1,12 @@
-
-import * as actions from '../modules/websocket';
-import { updateGame, } from '../modules/game';
+import * as actions from './SocketReducer';
+import { fetchTickerHistoryData } from '../Redux/Ticker/tickerAction';
 
 const socketMiddleware = () => {
   let socket = null;
 
-  const onOpen = store => (event) => {
-    console.log('websocket open', event.target.url);
+  const onOpen = (store,cb) => (event) => {
     store.dispatch(actions.wsConnected(event.target.url));
+    cb();
   };
 
   const onClose = store => () => {
@@ -16,19 +15,17 @@ const socketMiddleware = () => {
 
   const onMessage = store => (event) => {
     const payload = JSON.parse(event.data);
-    console.log('receiving server message');
-
-    switch (payload.type) {
-      case 'update_game_players':
-        store.dispatch(updateGame(payload.game, payload.current_player));
+    switch (event.type) {
+      case 'message':
+        store.dispatch(fetchTickerHistoryData(payload));
         break;
       default:
+        console.log(payload);
         break;
     }
   };
 
-  // the middleware part of this function
-  return store => next => action => {
+  return store => next => (action) => {
     switch (action.type) {
       case 'WS_CONNECT':
         if (socket !== null) {
@@ -37,11 +34,10 @@ const socketMiddleware = () => {
 
         // connect to the remote host
         socket = new WebSocket(action.host);
-
         // websocket handlers
         socket.onmessage = onMessage(store);
         socket.onclose = onClose(store);
-        socket.onopen = onOpen(store);
+        socket.onopen = onOpen(store,action.cb);
 
         break;
       case 'WS_DISCONNECT':
@@ -49,14 +45,18 @@ const socketMiddleware = () => {
           socket.close();
         }
         socket = null;
-        console.log('websocket closed');
         break;
-      case 'NEW_MESSAGE':
-        console.log('sending a message', action.msg);
-        socket.send(JSON.stringify({ command: 'NEW_MESSAGE', message: action.msg }));
+      
+      case 'FETCH_ALL_HISTORY':
+          console.log("the action for fetch ticker history",action.channel,action.symbol);
+        socket.send(JSON.stringify({ 
+      event: 'subscribe', 
+      channel:action.channel, 
+      symbol:action.symbol 
+    }));
         break;
+    
       default:
-        console.log('the next action:', action);
         return next(action);
     }
   };

@@ -17,7 +17,6 @@ export const websocketReducer = (state = { ...websocketInitialState }, action) =
     case 'WS_CONNECTED':
         return { ...state,isSocketConnected:true, host: action.host,}
     case 'FETCH_ALL_HISTORY':
-        console.log("the actulat data is",state);
         return {...state, }
     case 'WS_DISCONNECT':
 

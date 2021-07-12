@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -70,7 +69,7 @@ export default function HorizontalTabs() {
       {/* </AppBar> */}
       <TabPanel value={value} index={0}>
        <header className="trading_tab_header">
-            <InputField type="text" placeholder="hekllo" />
+            <InputField type="text" />
             <SelectOpt />
        </header>
        <section className="trading_tab_main_wrapper">

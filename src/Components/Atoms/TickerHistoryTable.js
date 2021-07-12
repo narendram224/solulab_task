@@ -1,58 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import {  makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+
 import './TickerHistoryTable.css';
-
-function createData(name, last, hours, vol) {
-  return { name, last, hours, vol,  };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67),
-  createData('Donut', 452, 25.0, 51),
-  createData('Eclair', 262, 16.0, 24),
-  createData('Frozen yoghurt', 159, 6.0, 24),
-  createData('Gingerbread', 356, 16.0, 49),
-  createData('Honeycomb', 408, 3.2, 87),
-  createData('Ice cream sandwich', 237, 9.0, 37),
-  createData('Jelly Bean', 375, 0.0, 94),
-  createData('C', 437, 18.0, 63),
-  createData('D', 437, 18.0, 63),
-  createData('CE', 437, 18.0, 63),
-  createData('CF', 437, 18.0, 63),
-  createData('CG', 437, 18.0, 63),
-  createData('CH', 437, 18.0, 63),
-  createData('CI', 437, 18.0, 63),
-  createData('CS', 437, 18.0, 63),
-  createData('CW', 437, 18.0, 63),
-  createData('KitKat', 518, 26.0, 65),
-  createData('Lollipop', 392, 0.2, 98),
-  createData('Marshmallow', 318, 0, 81),
-  createData('Nougat', 360, 19.0, 9),
-  createData('A', 437, 128.0, 63),
-  createData('B', 447, 168.0, 63),
+import { useSelector } from 'react-redux';
 
 
-];
+
+// const rows = [
+//   createData('Cupcake', 305, 3.7, 67),
+// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -162,6 +125,10 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const tickers = useSelector(state=>state.ticker);
+
+let rows  = tickers.tickers;
+console.log("tickers Tasble Tickers is",tickers.tickers);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -201,15 +168,15 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.name}
+                      key={`Row${index}_${row[1]}`}
                     >
                      
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {row[10]}
                       </TableCell>
-                      <TableCell align="right">{row.last}</TableCell>
-                      <TableCell align="right">{row.hours}</TableCell>
-                      <TableCell align="right">{row.vol}</TableCell>
+                      <TableCell align="right">{row[6]}</TableCell>
+                      <TableCell align="right" className={Math.sign(row[5])===-1?"greenColor":"redColor"}>{row[5]}</TableCell>
+                      <TableCell align="right">{row[7]}</TableCell>
                     </TableRow>
                   );
                 })}
